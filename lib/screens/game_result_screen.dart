@@ -120,8 +120,10 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(keyPoint_value: 0, keyPoint: listOfKeypads[1]),
-                        NumberPad(keyPoint_value: 1, keyPoint: listOfKeypads[2]),
+                        NumberPad(
+                            keyPoint_value: 0, keyPoint: listOfKeypads[1]),
+                        NumberPad(
+                            keyPoint_value: 1, keyPoint: listOfKeypads[2]),
                         NumberPad(keyPoint_value: 2, keyPoint: listOfKeypads[3])
                       ],
                     ),
@@ -131,8 +133,10 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(keyPoint_value: 0, keyPoint: listOfKeypads[4]),
-                        NumberPad(keyPoint_value: 1, keyPoint: listOfKeypads[5]),
+                        NumberPad(
+                            keyPoint_value: 0, keyPoint: listOfKeypads[4]),
+                        NumberPad(
+                            keyPoint_value: 1, keyPoint: listOfKeypads[5]),
                         NumberPad(keyPoint_value: 2, keyPoint: listOfKeypads[6])
                       ],
                     ),
@@ -142,8 +146,10 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(keyPoint_value: 0, keyPoint: listOfKeypads[7]),
-                        NumberPad(keyPoint_value: 1, keyPoint: listOfKeypads[8]),
+                        NumberPad(
+                            keyPoint_value: 0, keyPoint: listOfKeypads[7]),
+                        NumberPad(
+                            keyPoint_value: 1, keyPoint: listOfKeypads[8]),
                         NumberPad(keyPoint_value: 2, keyPoint: listOfKeypads[9])
                       ],
                     ),
@@ -153,9 +159,12 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(keyPoint_value: 0, keyPoint: listOfKeypads[11]),
-                        NumberPad(keyPoint_value: 1, keyPoint: listOfKeypads[0]),
-                        NumberPad(keyPoint_value: 2, keyPoint: listOfKeypads[10])
+                        NumberPad(
+                            keyPoint_value: 0, keyPoint: listOfKeypads[11]),
+                        NumberPad(
+                            keyPoint_value: 1, keyPoint: listOfKeypads[0]),
+                        NumberPad(
+                            keyPoint_value: 2, keyPoint: listOfKeypads[10])
                       ],
                     ),
                   ),
@@ -167,7 +176,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: openGame,
+                  onPressed: saveGame,
                   child: Text(done),
                 ),
               ),
@@ -178,12 +187,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
     );
   }
 
-  void openGame() {
-    openGameResultScreen();
-  }
-
-  Future<void> openGameResultScreen() async {
-    await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GameResultScreen()));
+  void saveGame() {
+    //TODO save the score and add a new tile to the mainscreen
+    Navigator.pop(context);
   }
 }
