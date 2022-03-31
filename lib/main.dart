@@ -1,8 +1,14 @@
+import 'package:bela_blok/providers/points_provider.dart';
 import 'package:bela_blok/screens/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const FlutterBlueApp());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => PointsProvider()),
+    ], child: const FlutterBlueApp()),
+  );
 }
 
 class FlutterBlueApp extends StatefulWidget {
@@ -13,13 +19,11 @@ class FlutterBlueApp extends StatefulWidget {
 }
 
 class _FlutterBlueAppState extends State<FlutterBlueApp> {
-
   @override
   MaterialApp build(BuildContext context) {
     return MaterialApp(
         title: 'Parking Show',
         theme: ThemeData(primarySwatch: Colors.green),
-        home: const BelaBlokMainScreen()
-    );
+        home: const BelaBlokMainScreen());
   }
 }

@@ -1,11 +1,10 @@
-import 'package:bela_blok/helpers/points_calculator.dart';
+import 'package:bela_blok/helpers/media_query.dart';
+import 'package:provider/provider.dart';
+import 'package:bela_blok/providers/points_provider.dart';
 import 'package:flutter/material.dart';
 
 class NumberPad extends StatelessWidget {
-  const NumberPad(
-      {Key? key, required this.keyPoint_value, required this.keyPoint})
-      : super(key: key);
-  final int keyPoint_value;
+  const NumberPad({Key? key, required this.keyPoint}) : super(key: key);
   final String keyPoint;
 
   @override
@@ -13,15 +12,11 @@ class NumberPad extends StatelessWidget {
     return Expanded(
         flex: 1,
         child: ElevatedButton(
-          onPressed: Calculate,
+          onPressed: () => Provider.of<PointsProvider>(context, listen: false)
+              .calculate(keyPoint),
           style: ElevatedButton.styleFrom(primary: Colors.grey),
-          child: Text(keyPoint),
+          child: Text(keyPoint,
+              style: TextStyle(fontSize: fontSize(context) * 30)),
         ));
-  }
-
-  void Calculate() {
-    //TODO Fix calculating and formating numbers pressed by keypads
-    //TODO edit static or use BelaTile model
-    PointsCalculator.insert("1", keyPoint);
   }
 }

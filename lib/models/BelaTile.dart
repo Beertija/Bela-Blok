@@ -1,14 +1,14 @@
 import 'dart:core';
 
 class BelaTile {
-  int firstTeamPlay;
-  int secondTeamPlay;
-  int firstTeamTillVicotry;
-  int secondTeamTillVictory;
+  String pointsFirstTeam;
+  String contractFirstTeam;
+  String pointsSecondTeam;
+  String contractSecondTeam;
 
   BelaTile(
-      {required this.firstTeamPlay,
-      required this.secondTeamPlay,
-      required this.firstTeamTillVicotry,
-      required this.secondTeamTillVictory});
+      {required this.pointsFirstTeam,
+      required this.contractFirstTeam,
+      required this.pointsSecondTeam,
+      required this.contractSecondTeam});
 }

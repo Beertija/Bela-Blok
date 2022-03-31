@@ -1,7 +1,11 @@
 import 'package:bela_blok/components/number_plate_template.dart';
+import 'package:bela_blok/helpers/points_calculator.dart';
+import 'package:bela_blok/providers/points_provider.dart';
 import 'package:flutter/material.dart';
 
 import '../components/team_score_template.dart';
+import '../helpers/media_query.dart';
+import 'package:provider/provider.dart';
 
 class GameResultScreen extends StatefulWidget {
   const GameResultScreen({Key? key}) : super(key: key);
@@ -11,7 +15,6 @@ class GameResultScreen extends StatefulWidget {
 }
 
 class _GameResultScreenState extends State<GameResultScreen> {
-  bool pointsActive = true;
   String teamFirst = "Team 1";
   String teamSecond = "Team 2";
   String done = "Done";
@@ -31,10 +34,6 @@ class _GameResultScreenState extends State<GameResultScreen> {
     "C",
     "CE"
   ];
-  int pointsFirstTeam = 0;
-  int contractFirstTeam = 0;
-  int pointsSecondTeam = 0;
-  int contractSecondTeam = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +63,17 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TeamScore(
-                      teamName: teamFirst,
-                      teamPoints: pointsFirstTeam,
-                      teamContract: contractFirstTeam,
-                    ),
+                        teamName: teamFirst,
+                        teamPoints: int.parse(Provider.of<PointsProvider>(context, listen: true).belaTile.pointsFirstTeam),
+                        teamContract: int.parse(Provider.of<PointsProvider>(context, listen: true).belaTile.contractFirstTeam),
+                        firstTeamActive: true,
+                        onPointsPressed: setActiveButton),
                     TeamScore(
-                      teamName: teamSecond,
-                      teamPoints: pointsSecondTeam,
-                      teamContract: contractSecondTeam,
-                    ),
+                        teamName: teamSecond,
+                        teamPoints: int.parse(Provider.of<PointsProvider>(context, listen: true).belaTile.pointsSecondTeam),
+                        teamContract: int.parse(Provider.of<PointsProvider>(context, listen: true).belaTile.contractSecondTeam),
+                        firstTeamActive: false,
+                        onPointsPressed: setActiveButton),
                   ],
                 ),
               ),
@@ -87,26 +88,28 @@ class _GameResultScreenState extends State<GameResultScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            pointsActive = true;
+                            PointsCalculator.pointsActive = true;
                           });
                         },
-                        style: pointsActive
+                        style: PointsCalculator.pointsActive
                             ? ElevatedButton.styleFrom(primary: Colors.green)
                             : ElevatedButton.styleFrom(primary: Colors.grey),
-                        child: Text(points),
+                        child: Text(points,
+                            style: TextStyle(fontSize: fontSize(context) * 28)),
                       )),
                   Expanded(
                       flex: 1,
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            pointsActive = false;
+                            PointsCalculator.pointsActive = false;
                           });
                         },
-                        style: pointsActive
+                        style: PointsCalculator.pointsActive
                             ? ElevatedButton.styleFrom(primary: Colors.grey)
                             : ElevatedButton.styleFrom(primary: Colors.green),
-                        child: Text(contract),
+                        child: Text(contract,
+                            style: TextStyle(fontSize: fontSize(context) * 28)),
                       ))
                 ],
               ),
@@ -120,11 +123,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(
-                            keyPoint_value: 0, keyPoint: listOfKeypads[1]),
-                        NumberPad(
-                            keyPoint_value: 1, keyPoint: listOfKeypads[2]),
-                        NumberPad(keyPoint_value: 2, keyPoint: listOfKeypads[3])
+                        NumberPad(keyPoint: listOfKeypads[1]),
+                        NumberPad(keyPoint: listOfKeypads[2]),
+                        NumberPad(keyPoint: listOfKeypads[3])
                       ],
                     ),
                   ),
@@ -133,11 +134,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(
-                            keyPoint_value: 0, keyPoint: listOfKeypads[4]),
-                        NumberPad(
-                            keyPoint_value: 1, keyPoint: listOfKeypads[5]),
-                        NumberPad(keyPoint_value: 2, keyPoint: listOfKeypads[6])
+                        NumberPad(keyPoint: listOfKeypads[4]),
+                        NumberPad(keyPoint: listOfKeypads[5]),
+                        NumberPad(keyPoint: listOfKeypads[6])
                       ],
                     ),
                   ),
@@ -146,11 +145,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(
-                            keyPoint_value: 0, keyPoint: listOfKeypads[7]),
-                        NumberPad(
-                            keyPoint_value: 1, keyPoint: listOfKeypads[8]),
-                        NumberPad(keyPoint_value: 2, keyPoint: listOfKeypads[9])
+                        NumberPad(keyPoint: listOfKeypads[7]),
+                        NumberPad(keyPoint: listOfKeypads[8]),
+                        NumberPad(keyPoint: listOfKeypads[9])
                       ],
                     ),
                   ),
@@ -159,12 +156,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        NumberPad(
-                            keyPoint_value: 0, keyPoint: listOfKeypads[11]),
-                        NumberPad(
-                            keyPoint_value: 1, keyPoint: listOfKeypads[0]),
-                        NumberPad(
-                            keyPoint_value: 2, keyPoint: listOfKeypads[10])
+                        NumberPad(keyPoint: listOfKeypads[11]),
+                        NumberPad(keyPoint: listOfKeypads[0]),
+                        NumberPad(keyPoint: listOfKeypads[10])
                       ],
                     ),
                   ),
@@ -177,7 +171,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: saveGame,
-                  child: Text(done),
+                  child: Text(done,
+                      style: TextStyle(fontSize: fontSize(context) * 28)),
                 ),
               ),
             ),
@@ -185,6 +180,12 @@ class _GameResultScreenState extends State<GameResultScreen> {
         ),
       ),
     );
+  }
+
+  setActiveButton(bool value) {
+    setState(() {
+      PointsCalculator.firstTeamActive = value;
+    });
   }
 
   void saveGame() {
