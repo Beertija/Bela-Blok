@@ -39,6 +39,12 @@ class _GameResultScreenState extends State<GameResultScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<PointsProvider>(context, listen: false).reset();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
@@ -211,7 +217,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                                             Provider.of<PointsProvider>(context,
                                                     listen: false)
                                                 .loss(true);
-                                            Navigator.pop(context);
+                                            lostGame();
                                           },
                                           child: Text(teamFirst,
                                               style: TextStyle(
@@ -222,7 +228,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                                             Provider.of<PointsProvider>(context,
                                                     listen: false)
                                                 .loss(false);
-                                            Navigator.pop(context);
+                                            lostGame();
                                           },
                                           child: Text(teamSecond,
                                               style: TextStyle(
@@ -244,7 +250,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: saveScore,
+                        onPressed: saveGame,
                         child: Text(done,
                             style: TextStyle(fontSize: fontSize(context) * 28)),
                       ),
@@ -265,8 +271,13 @@ class _GameResultScreenState extends State<GameResultScreen> {
     });
   }
 
-  void saveScore() {
-    saveGame();
+  lostGame() {
+    BelaTile belaTile =
+        Provider.of<PointsProvider>(context, listen: false).belaTile;
+    PointsCalculator.numberOfGames
+        .putIfAbsent(PointsCalculator.counter, () => belaTile);
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   saveGame() {
@@ -274,7 +285,6 @@ class _GameResultScreenState extends State<GameResultScreen> {
         Provider.of<PointsProvider>(context, listen: false).belaTile;
     PointsCalculator.numberOfGames
         .putIfAbsent(PointsCalculator.counter, () => belaTile);
-    Provider.of<PointsProvider>(context, listen: false).reset();
     Navigator.pop(context);
   }
 }
