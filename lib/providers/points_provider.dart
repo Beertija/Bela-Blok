@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class PointsProvider with ChangeNotifier {
   final int maxPoints = 162;
+  final int maxContract = 1001;
   final BelaTile _belaTile = BelaTile(
       pointsFirstTeam: "0",
       contractFirstTeam: "0",
@@ -12,9 +13,20 @@ class PointsProvider with ChangeNotifier {
 
   BelaTile get belaTile => _belaTile;
 
+  void reset() {
+    _belaTile.pointsFirstTeam = "0";
+    _belaTile.contractFirstTeam = "0";
+    _belaTile.pointsSecondTeam = "0";
+    _belaTile.contractSecondTeam = "0";
+  }
+
   String insert(String original, String addition) {
     if (PointsCalculator.pointsActive) {
       if (int.parse(original + addition) > maxPoints) {
+        return original;
+      }
+    } else {
+      if (int.parse(original + addition) > maxContract) {
         return original;
       }
     }
@@ -36,6 +48,24 @@ class PointsProvider with ChangeNotifier {
 
   String clearAll() {
     return "0";
+  }
+
+  void loss(bool firstTeamLoss) {
+    switch(firstTeamLoss) {
+      case true:
+        _belaTile.pointsFirstTeam = clearAll();
+        _belaTile.contractSecondTeam = (int.parse(_belaTile.contractSecondTeam) + int.parse(_belaTile.contractFirstTeam)).toString();
+        _belaTile.contractFirstTeam = clearAll();
+        _belaTile.pointsSecondTeam = maxPoints.toString();
+        break;
+      case false:
+        _belaTile.pointsSecondTeam = clearAll();
+        _belaTile.contractFirstTeam = (int.parse(_belaTile.contractFirstTeam) + int.parse(_belaTile.contractSecondTeam)).toString();
+        _belaTile.contractSecondTeam = clearAll();
+        _belaTile.pointsFirstTeam = maxPoints.toString();
+        break;
+    }
+    notifyListeners();
   }
 
   void calculate(String keyPoint) {

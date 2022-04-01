@@ -39,7 +39,7 @@ class _TeamScoreState extends State<TeamScore> {
               : ElevatedButton.styleFrom(
                   primary: Colors.white, onPrimary: Colors.black),
           child: Text(widget.teamPoints.toString(),
-              style: TextStyle(fontSize: fontSize(context) * 80)),
+              style: TextStyle(fontSize: fontSize(context) * 60)),
         ),
         Text("Contract: " + widget.teamContract.toString(),
             style: TextStyle(
