@@ -47,6 +47,15 @@ class _BelaBlokMainScreenState extends State<BelaBlokMainScreen> {
           ),
           Expanded(
               flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(Provider.of<BelaGamesProvider>(context, listen: true).numberOfPointsFirstTeam.toString()),
+                  Text(Provider.of<BelaGamesProvider>(context, listen: true).numberOfPointsSecondTeam.toString()),
+                ],
+              )),
+          Expanded(
+              flex: 1,
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
