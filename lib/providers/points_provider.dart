@@ -1,23 +1,29 @@
 import 'package:bela_blok/helpers/points_calculator.dart';
-import 'package:bela_blok/models/BelaTile.dart';
+import 'package:bela_blok/models/BelaGame.dart';
 import 'package:flutter/material.dart';
 
 class PointsProvider with ChangeNotifier {
   final int maxPoints = 162;
   final int maxContract = 1001;
-  final BelaTile _belaTile = BelaTile(
+
+  BelaGame _belaGame = BelaGame(
       pointsFirstTeam: "0",
       contractFirstTeam: "0",
       pointsSecondTeam: "0",
-      contractSecondTeam: "0");
+      contractSecondTeam: "0",
+      mainScoreFirstTeam: "0",
+      mainScoreSecondTeam: "0");
 
-  BelaTile get belaTile => _belaTile;
+  BelaGame get belaGame => _belaGame;
 
   void reset() {
-    _belaTile.pointsFirstTeam = "0";
-    _belaTile.contractFirstTeam = "0";
-    _belaTile.pointsSecondTeam = "0";
-    _belaTile.contractSecondTeam = "0";
+    _belaGame = BelaGame(
+        pointsFirstTeam: "0",
+        contractFirstTeam: "0",
+        pointsSecondTeam: "0",
+        contractSecondTeam: "0",
+        mainScoreFirstTeam: "0",
+        mainScoreSecondTeam: "0");
   }
 
   String insert(String original, String addition) {
@@ -51,18 +57,23 @@ class PointsProvider with ChangeNotifier {
   }
 
   void loss(bool firstTeamLoss) {
-    switch(firstTeamLoss) {
+    switch (firstTeamLoss) {
       case true:
-        _belaTile.pointsFirstTeam = clearAll();
-        _belaTile.contractSecondTeam = (int.parse(_belaTile.contractSecondTeam) + int.parse(_belaTile.contractFirstTeam)).toString();
-        _belaTile.contractFirstTeam = clearAll();
-        _belaTile.pointsSecondTeam = maxPoints.toString();
+        _belaGame.pointsFirstTeam = clearAll();
+        _belaGame.contractSecondTeam =
+            (int.parse(_belaGame.contractSecondTeam) +
+                    int.parse(_belaGame.contractFirstTeam))
+                .toString();
+        _belaGame.contractFirstTeam = clearAll();
+        _belaGame.pointsSecondTeam = maxPoints.toString();
         break;
       case false:
-        _belaTile.pointsSecondTeam = clearAll();
-        _belaTile.contractFirstTeam = (int.parse(_belaTile.contractFirstTeam) + int.parse(_belaTile.contractSecondTeam)).toString();
-        _belaTile.contractSecondTeam = clearAll();
-        _belaTile.pointsFirstTeam = maxPoints.toString();
+        _belaGame.pointsSecondTeam = clearAll();
+        _belaGame.contractFirstTeam = (int.parse(_belaGame.contractFirstTeam) +
+                int.parse(_belaGame.contractSecondTeam))
+            .toString();
+        _belaGame.contractSecondTeam = clearAll();
+        _belaGame.pointsFirstTeam = maxPoints.toString();
         break;
     }
     notifyListeners();
@@ -73,51 +84,59 @@ class PointsProvider with ChangeNotifier {
       case "C":
         if (PointsCalculator.firstTeamActive) {
           if (PointsCalculator.pointsActive) {
-            _belaTile.pointsFirstTeam = clear(_belaTile.pointsFirstTeam);
-            _belaTile.pointsSecondTeam = (maxPoints - int.parse(_belaTile.pointsFirstTeam)).toString();
+            _belaGame.pointsFirstTeam = clear(_belaGame.pointsFirstTeam);
+            _belaGame.pointsSecondTeam =
+                (maxPoints - int.parse(_belaGame.pointsFirstTeam)).toString();
           } else {
-            _belaTile.contractFirstTeam = clear(_belaTile.contractFirstTeam);
+            _belaGame.contractFirstTeam = clear(_belaGame.contractFirstTeam);
           }
         } else {
           if (PointsCalculator.pointsActive) {
-            _belaTile.pointsSecondTeam = clear(_belaTile.pointsSecondTeam);
-            _belaTile.pointsFirstTeam = (maxPoints - int.parse(_belaTile.pointsSecondTeam)).toString();
+            _belaGame.pointsSecondTeam = clear(_belaGame.pointsSecondTeam);
+            _belaGame.pointsFirstTeam =
+                (maxPoints - int.parse(_belaGame.pointsSecondTeam)).toString();
           } else {
-            _belaTile.contractSecondTeam = clear(_belaTile.contractSecondTeam);
+            _belaGame.contractSecondTeam = clear(_belaGame.contractSecondTeam);
           }
         }
         break;
       case "CE":
         if (PointsCalculator.firstTeamActive) {
           if (PointsCalculator.pointsActive) {
-            _belaTile.pointsFirstTeam = clearAll();
-            _belaTile.pointsSecondTeam = maxPoints.toString();
+            _belaGame.pointsFirstTeam = clearAll();
+            _belaGame.pointsSecondTeam = maxPoints.toString();
           } else {
-            _belaTile.contractFirstTeam = clearAll();
+            _belaGame.contractFirstTeam = clearAll();
           }
         } else {
           if (PointsCalculator.pointsActive) {
-            _belaTile.pointsSecondTeam = clearAll();
-            _belaTile.pointsFirstTeam = maxPoints.toString();
+            _belaGame.pointsSecondTeam = clearAll();
+            _belaGame.pointsFirstTeam = maxPoints.toString();
           } else {
-            _belaTile.contractSecondTeam = clearAll();
+            _belaGame.contractSecondTeam = clearAll();
           }
         }
         break;
       default:
         if (PointsCalculator.firstTeamActive) {
           if (PointsCalculator.pointsActive) {
-            _belaTile.pointsFirstTeam = insert(_belaTile.pointsFirstTeam, keyPoint);
-            _belaTile.pointsSecondTeam = (maxPoints - int.parse(_belaTile.pointsFirstTeam)).toString();
+            _belaGame.pointsFirstTeam =
+                insert(_belaGame.pointsFirstTeam, keyPoint);
+            _belaGame.pointsSecondTeam =
+                (maxPoints - int.parse(_belaGame.pointsFirstTeam)).toString();
           } else {
-            _belaTile.contractFirstTeam = insert(_belaTile.contractFirstTeam, keyPoint);
+            _belaGame.contractFirstTeam =
+                insert(_belaGame.contractFirstTeam, keyPoint);
           }
         } else {
           if (PointsCalculator.pointsActive) {
-            _belaTile.pointsSecondTeam = insert(_belaTile.pointsSecondTeam, keyPoint);
-            _belaTile.pointsFirstTeam = (maxPoints - int.parse(_belaTile.pointsSecondTeam)).toString();
+            _belaGame.pointsSecondTeam =
+                insert(_belaGame.pointsSecondTeam, keyPoint);
+            _belaGame.pointsFirstTeam =
+                (maxPoints - int.parse(_belaGame.pointsSecondTeam)).toString();
           } else {
-            _belaTile.contractSecondTeam = insert(_belaTile.contractSecondTeam, keyPoint);
+            _belaGame.contractSecondTeam =
+                insert(_belaGame.contractSecondTeam, keyPoint);
           }
         }
     }

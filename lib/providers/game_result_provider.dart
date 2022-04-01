@@ -1,21 +1,20 @@
-import 'package:bela_blok/helpers/points_calculator.dart';
-import 'package:bela_blok/models/BelaTile.dart';
+import 'package:bela_blok/models/BelaGame.dart';
 import 'package:flutter/material.dart';
 
-class PointsProvider with ChangeNotifier {
-  int maxPoints = 162;
-  final BelaTile _belaTile = BelaTile(
-      pointsFirstTeam: "0",
-      contractFirstTeam: "0",
-      pointsSecondTeam: "0",
-      contractSecondTeam: "0");
+class BelaGamesProvider with ChangeNotifier {
+  int counter = 1;
+  final Map<int, BelaGame> _belaGames = {};
 
-  BelaTile get belaTile => _belaTile;
+  Map<int, BelaGame> get belaGames => _belaGames;
 
-  void reset() {
-    _belaTile.pointsFirstTeam = "0";
-    _belaTile.contractFirstTeam = "0";
-    _belaTile.pointsSecondTeam = "0";
-    _belaTile.contractSecondTeam = "0";
+  void add(BelaGame belaGame) {
+    belaGame.mainScoreSecondTeam = (int.parse(belaGame.pointsSecondTeam) +
+        int.parse(belaGame.contractSecondTeam))
+        .toString();
+    belaGame.mainScoreFirstTeam = (int.parse(belaGame.pointsFirstTeam) +
+        int.parse(belaGame.contractFirstTeam))
+        .toString();
+    _belaGames.putIfAbsent(counter++, () => belaGame);
+    notifyListeners();
   }
 }

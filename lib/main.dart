@@ -1,3 +1,4 @@
+import 'package:bela_blok/providers/game_result_provider.dart';
 import 'package:bela_blok/providers/points_provider.dart';
 import 'package:bela_blok/screens/main_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ void main() {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => PointsProvider()),
+      ChangeNotifierProvider(create: (_) => BelaGamesProvider()),
     ], child: const FlutterBlueApp()),
   );
 }

@@ -1,6 +1,7 @@
 import 'package:bela_blok/components/number_plate_template.dart';
 import 'package:bela_blok/helpers/points_calculator.dart';
-import 'package:bela_blok/models/BelaTile.dart';
+import 'package:bela_blok/models/BelaGame.dart';
+import 'package:bela_blok/providers/game_result_provider.dart';
 import 'package:bela_blok/providers/points_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -76,15 +77,15 @@ class _GameResultScreenState extends State<GameResultScreen> {
                         teamPoints: int.parse(Provider.of<PointsProvider>(
                                     context,
                                     listen: true)
-                                .belaTile
+                                .belaGame
                                 .pointsFirstTeam) +
                             int.parse(Provider.of<PointsProvider>(context,
                                     listen: true)
-                                .belaTile
+                                .belaGame
                                 .contractFirstTeam),
                         teamContract: int.parse(
                             Provider.of<PointsProvider>(context, listen: true)
-                                .belaTile
+                                .belaGame
                                 .contractFirstTeam),
                         firstTeamActive: true,
                         onPointsPressed: setActiveButton),
@@ -93,15 +94,15 @@ class _GameResultScreenState extends State<GameResultScreen> {
                         teamPoints: int.parse(Provider.of<PointsProvider>(
                                     context,
                                     listen: true)
-                                .belaTile
+                                .belaGame
                                 .pointsSecondTeam) +
                             int.parse(Provider.of<PointsProvider>(context,
                                     listen: true)
-                                .belaTile
+                                .belaGame
                                 .contractSecondTeam),
                         teamContract: int.parse(
                             Provider.of<PointsProvider>(context, listen: true)
-                                .belaTile
+                                .belaGame
                                 .contractSecondTeam),
                         firstTeamActive: false,
                         onPointsPressed: setActiveButton),
@@ -272,19 +273,17 @@ class _GameResultScreenState extends State<GameResultScreen> {
   }
 
   lostGame() {
-    BelaTile belaTile =
-        Provider.of<PointsProvider>(context, listen: false).belaTile;
-    PointsCalculator.numberOfGames
-        .putIfAbsent(PointsCalculator.counter, () => belaTile);
+    BelaGame belaGame =
+        Provider.of<PointsProvider>(context, listen: false).belaGame;
+    Provider.of<BelaGamesProvider>(context, listen: false).add(belaGame);
     Navigator.pop(context);
     Navigator.pop(context);
   }
 
   saveGame() {
-    BelaTile belaTile =
-        Provider.of<PointsProvider>(context, listen: false).belaTile;
-    PointsCalculator.numberOfGames
-        .putIfAbsent(PointsCalculator.counter, () => belaTile);
+    BelaGame belaGame =
+        Provider.of<PointsProvider>(context, listen: false).belaGame;
+    Provider.of<BelaGamesProvider>(context, listen: false).add(belaGame);
     Navigator.pop(context);
   }
 }

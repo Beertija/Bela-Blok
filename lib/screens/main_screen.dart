@@ -1,7 +1,7 @@
+import 'package:bela_blok/providers/game_result_provider.dart';
 import 'package:bela_blok/screens/game_result_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../models/BelaTile.dart';
+import 'package:provider/provider.dart';
 
 class BelaBlokMainScreen extends StatefulWidget {
   const BelaBlokMainScreen({Key? key}) : super(key: key);
@@ -11,8 +11,6 @@ class BelaBlokMainScreen extends StatefulWidget {
 }
 
 class _BelaBlokMainScreenState extends State<BelaBlokMainScreen> {
-  List<BelaTile>? listOfBelaPlays;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,9 +19,31 @@ class _BelaBlokMainScreenState extends State<BelaBlokMainScreen> {
       ),
       body: Column(
         children: [
-          const Expanded(
-            child: Text("broj"),
+          Expanded(
             flex: 8,
+            child: ListView.builder(
+                itemCount: Provider.of<BelaGamesProvider>(context, listen: true)
+                    .belaGames
+                    .length,
+                itemBuilder: (context, index) {
+                  int key =
+                      Provider.of<BelaGamesProvider>(context, listen: true)
+                          .belaGames
+                          .keys
+                          .elementAt(index);
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(Provider.of<BelaGamesProvider>(context, listen: true)
+                          .belaGames[key]!
+                          .mainScoreFirstTeam),
+                      Text(Provider.of<BelaGamesProvider>(context, listen: true)
+                          .belaGames[key]!
+                          .mainScoreSecondTeam),
+                    ],
+                  );
+                  // return Card(myDevice: PointsCalculator.Games[key]!);
+                }),
           ),
           Expanded(
               flex: 1,
@@ -33,8 +53,7 @@ class _BelaBlokMainScreenState extends State<BelaBlokMainScreen> {
                   onPressed: openGame,
                   child: const Text("New game"),
                 ),
-              )
-          ),
+              )),
         ],
       ),
     );
